@@ -3,9 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="promise.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script
+            src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+            crossorigin="anonymous"></script>
+    <script
+            src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+            integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
+            crossorigin="anonymous"></script>
+    <script>
+        $(function () {
+            $("#draggable").draggable();
+            $("#droppable").droppable({
+                drop: function (event, ui) {
+                    $(this)
+                        .css("background-color", "yellow")
+                        .find("p")
+                        .html("Dropped!");
+                }
+            });
+            // $( "#resizable" ).resizable();
+            // $( "#selectable" ).selectable();
+            let resizable = $("#resizable");
+            let selectable = $("#selectable");
+            let sortable = $("#sortable");
+            let accordion = $("#accordion");
+            let autocomplete = $("#autocomplete");
+            resizable.resizable();
+            selectable.selectable();
+            sortable.sortable();
+            accordion.accordion();
+            var availableTags = [
+                "ActionScript",
+                "AppleScript",
+                "Asp",
+                "BASIC",
+                "C",
+                "C++",
+            ];
+            autocomplete.autocomplete({source: availableTags});
+            $( "#datepicker" ).datepicker();
+            $( "#dialog" ).dialog();
+            $( "#slider" ).slider();
+            $( "#progressbar" ).progressbar({
+                value: 50
+            });
+        });
+    </script>
+    <style>
+        div {
+            width: 500px;
+        }
+        #selectable .ui-selecting {
+            background: #FECA40;
+        }
+        #selectable .ui-selected {
+            background: #F39814;
+            color: white;
+        }
+        #selectable {
+            list-style-type: none;
+            padding: 0;
+            width: 60%;
+        }
+        #selectable li {
+            padding: 0.4em;
+            font-size: 1.4em;
+            height: 18px;
+            margin: 0 3px 3px 3px;
+            padding-left: 1.5em;
+        }
+        #sortable li {
+            list-style-type: none;
+            margin: 0 3px 3px 3px;
+            padding: 0.4em;
+            padding-left: 1.5em;
+            font-size: 1.4em;
+            height: 18px;
+            width: 60%;
+        }
+    </style>
 </head>
 <body>
+<h3>draggable la cho phep keo va di chuyen</h3>
+<div id="draggable" class="ui-widget-content">
+    <h2><p>Drag me around</p></h2>
+</div>
+
+<h3>Droppable tao su kien xay ra khi co draggable keo vao trong</h3>
+<div id="droppable" class="ui-widget-header">
+    <h1><p>Drop here</p></h1>
+</div>
+
+<h3>Resizable cho phep thay doi kick thuoc cac hop</h3>
+<div id="resizable" class="ui-widget-content">
+    <h3 class="ui-widget-header">Resizable</h3>
+</div>
+
+<h3>Selectable la cho phep chon 1 hoac nhieu hop bang cach giu ctrl</h3>
+<ol id="selectable">
+    <li class="ui-widget-content">Item 1</li>
+    <li class="ui-widget-content">Item 2</li>
+    <li class="ui-widget-content">Item 3</li>
+    <li class="ui-widget-content">Item 4</li>
+    <li class="ui-widget-content">Item 5</li>
+    <li class="ui-widget-content">Item 6</li>
+    <li class="ui-widget-content">Item 7</li>
+</ol>
+
+<h3>Sortable cho phep sap xep cac hop bang cach keo tha</h3>
+<ul id="sortable">
+    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 1</li>
+    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 2</li>
+    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 3</li>
+    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 4</li>
+    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 5</li>
+    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 6</li>
+    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 7</li>
+</ul>
+
+<h3>Sortabl$("#tags")e cho phep dong mo noi dung trong cac thanh tab</h3>
+<div id="accordion">
+    <h3>Section 1</h3>
+    <div>
+        <p>
+            xin
+        </p>
+    </div>
+    <h3>Section 2</h3>
+    <div>
+        <p>
+            chao
+        </p>
+    </div>
+    <h3>Section 3</h3>
+    <div>
+        <p>
+            cac
+        </p>
+    </div>
+    <h3>Section 4</h3>
+    <div>
+        <p>
+            ban
+        </p>
+    </div>
+</div>
+
+<h3>autocomplete giup o tim kiem dua ra nhung goi y duoc cai dat truoc</h3>
+<div class="ui-widget">
+    <label for="autocomplete">Tags: </label>
+    <input id="autocomplete">
+</div>
+
+<h3>datepicker giup o text dua ra nhung goi y ngay thang nam</h3>
+<p>Date: <input type="text" id="datepicker"></p>
+
+<h3>dialog mo 1 o cua so trong vung chi dinh co the keo tha va dong bang dau X </h3>
+<div id="dialog" title="Basic dialog">
+    <p>o cua so trong vung chi dinh co the keo tha va dong bang dau X</p>
+</div>
+
+<h3>slider la 1 thanh truoc ngang keo de tang giam gia tri</h3>
+<div id="slider"></div>
+
+<h3>progressbar hien thi trang thai cua 1 qua trinh upload bang value </h3>
+<div id="progressbar"></div>
+
 
 </body>
 </html>

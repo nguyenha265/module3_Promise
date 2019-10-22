@@ -33,8 +33,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var _this = this;
+var wait5Secs = new Promise(function (resolve, reject) {
+    setTimeout(function () {
+        resolve(5);
+    }, 5000);
+});
+wait5Secs.then(function (data) { return console.log(data); }).catch(function (err) { return console.error(err); });
 function httpGet(url) {
-    // @ts-ignore
     return new Promise(function (resolve, reject) {
         var request = new XMLHttpRequest();
         request.onload = function () {
@@ -59,6 +65,7 @@ httpGet('https://api.github.com/search/repositories?q=angular').then(function (v
 }, function (reason) {
     console.error('Something went wrong', reason);
 });
+// parseJSON
 function parseResponse(value) {
     try {
         return JSON.parse(value);
@@ -73,22 +80,145 @@ httpGet('https://api.github.com/search/repositories?q=angular')
     .catch(function (reason) {
     console.error('Something went wrong', reason);
 });
+// promise chỉ resolve hoặc reject duy nhất 1 lần
+var promise = new Promise(function (resolve, reject) {
+    resolve('done');
+    reject(new Error('…')); // ignored
+    setTimeout(function () { return resolve('…'); }); // ignored
+});
+promise.then(function (data) { return console.log(data); });
+/**
+ * Async/Await
+ */
+function f() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            return [2 /*return*/, 1];
+        });
+    });
+}
+function fp() {
+    return Promise.resolve(1);
+}
+f().then(function (data) { return console.log('async fn', data); });
+(function () { return __awaiter(_this, void 0, void 0, function () {
+    var data;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, fp()];
+            case 1:
+                data = _a.sent();
+                console.log('async/await', data);
+                return [2 /*return*/];
+        }
+    });
+}); })();
+function fns() {
+    return __awaiter(this, void 0, void 0, function () {
+        var promise, result;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    promise = new Promise(function (resolve, reject) {
+                        setTimeout(function () { return resolve("done!"); }, 1000);
+                    });
+                    return [4 /*yield*/, promise];
+                case 1:
+                    result = _a.sent();
+                    console.log(result); // "done!"
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+fns();
+// handle error
+function getUser(username) {
+    return __awaiter(this, void 0, void 0, function () {
+        var response, e_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, fetch("https://api.github.com/search/users?q=" + username)];
+                case 1:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 2: return [2 /*return*/, _a.sent()];
+                case 3:
+                    e_1 = _a.sent();
+                    throw e_1;
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+getUser('bob')
+    .then(function (res) { return console.log(res); })
+    .catch(function (err) { return console.warn(err); });
+// do not combine sync operations with async/await
+(function () {
+    var x = 0;
+    function r5() {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                x += 1;
+                console.log(x);
+                return [2 /*return*/, 5];
+            });
+        });
+    }
+    (function () { return __awaiter(_this, void 0, void 0, function () {
+        var _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _a = x;
+                    return [4 /*yield*/, r5()];
+                case 1:
+                    x = _a + _b.sent();
+                    console.log(x);
+                    return [2 /*return*/];
+            }
+        });
+    }); })();
+})();
+// fixed version
+(function () {
+    var x = 0;
+    function r5() {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                x += 1;
+                console.log(x);
+                return [2 /*return*/, 5];
+            });
+        });
+    }
+    (function () { return __awaiter(_this, void 0, void 0, function () {
+        var y;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, r5()];
+                case 1:
+                    y = _a.sent();
+                    x += y;
+                    console.log(x);
+                    return [2 /*return*/];
+            }
+        });
+    }); })();
+})();
+// Too Sequential
 function fetchAllBook() {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: 
-                // @ts-ignore
-                return [4 /*yield*/, new Promise(function (resolve) {
-                        var count = 2;
-                        while (count < 0) {
-                            count--;
-                            console.log(count);
-                        }
+                case 0: return [4 /*yield*/, new Promise(function (resolve) {
+                        console.log('Waiting 2s...');
                         setTimeout(function () { return resolve(); }, 2000);
                     })];
                 case 1:
-                    // @ts-ignore
                     _a.sent();
                     console.log('fetchAllBook');
                     return [2 /*return*/, [
